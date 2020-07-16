@@ -1,4 +1,10 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Using for editting i18n language editor
+
+## Using: 
+- Replace content of json file with your i18next json
+- Start editting
+- Click save to save update json
 
 ## Available Scripts
 
