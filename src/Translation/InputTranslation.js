@@ -3,6 +3,8 @@ import translationJSON from './translation.json';
 import writeJsonFile from 'write-json-file';
 let delayUpdate = null;
 
+const NUMBER_OF_WORDS_FOR_FIELD = 5;
+
 const InputTranslation = () => {
   const [jsonData, setJsonData] = useState(translationJSON);
   const [languages, setLanguages] = useState(Object.entries(translationJSON).map(([key, value]) => { return key; }));
@@ -67,10 +69,21 @@ const InputTranslation = () => {
   }
 
   const _handleAddNewField = () => {
+    const capitalizeWord = (s) => {
+      if (typeof s !== 'string') return ''
+      return s.charAt(0).toUpperCase() + s.slice(1)
+    }
     if (inputNewField) {
       if (String(inputNewField).length > 0) {
+
+        let inputNewTxt = inputNewField.split(" ");
+        inputNewTxt = inputNewTxt
+          .map(item => capitalizeWord(item))
+          .slice(0, NUMBER_OF_WORDS_FOR_FIELD)
+          .join("");
+
         let updateJsonData = { ...jsonData }
-        Object.keys(jsonData).map(key => { updateJsonData[key]["translations"][inputNewField] = "" })
+        Object.keys(jsonData).map(key => { updateJsonData[key]["translations"][inputNewTxt] = "" })
         setJsonData(updateJsonData)
         setInputNewField('')
       }
@@ -105,6 +118,19 @@ const InputTranslation = () => {
     localStorage.setItem('TRANSLATION', value)
   }
 
+  const _handleExportJson = () => {
+    _handleSaveJson();
+
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([JSON.stringify(jsonData, null, 2)], {
+      type: "text/plain"
+    }));
+    a.setAttribute("download", "resource.json");
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+
   return (
     <React.Fragment>
       <div style={{ width: '90%', padding: '5%' }}>
@@ -118,6 +144,9 @@ const InputTranslation = () => {
         </div>
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: 20 }}>
           <button style={{ width: 120 }} onClick={_handleSaveJson}>Save To localStorage</button>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: 20 }}>
+          <button style={{ width: 120 }} onClick={_handleExportJson}>Save File</button>
         </div>
         <table style={{ border: '1px solid', width: '100%' }}>
           <thead >
