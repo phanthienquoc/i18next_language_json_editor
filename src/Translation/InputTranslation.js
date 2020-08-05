@@ -83,7 +83,7 @@ const InputTranslation = () => {
           .join("");
 
         let updateJsonData = { ...jsonData }
-        Object.keys(jsonData).map(key => { updateJsonData[key]["translations"][inputNewTxt] = "" })
+        Object.keys(jsonData).map(key => { updateJsonData[key]["translations"][inputNewTxt] = inputNewField })
         setJsonData(updateJsonData)
         setInputNewField('')
       }
@@ -136,7 +136,7 @@ const InputTranslation = () => {
       <div style={{ width: '90%', padding: '5%' }}>
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: 20 }}>
           <button style={{ width: 120 }} onClick={_handleAddNewLanguage}>Add Language</button>
-          <input style={{ flex: 1 }} defaultValue={inputNewLanguage} onChange={_handleOnChangeInputNewLanguage}  ></input>
+          <input style={{ flex: 1 }} value={inputNewLanguage} onChange={_handleOnChangeInputNewLanguage}  ></input>
         </div>
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: 20 }}>
           <button style={{ width: 120 }} onClick={_handleAddNewField}>Add Field</button>
